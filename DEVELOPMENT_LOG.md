@@ -116,3 +116,14 @@ Git was not initialized in the workspace. A new repository was initialized witho
 - HTTP form checks passed for server-side registration validation, generic invalid-login feedback through a read-only account lookup, and CSRF-protected logout.
 - Successful registration and login against MySQL were not exercised: there are no configured programs, and no test account was inserted. The repeatable model/auth tests ran against SQLite memory only.
 - No migration was rerun and no MySQL write statements were executed during this implementation.
+
+### Phase 2 finalization - official academic program
+
+- Inspected the live `programs` schema: `id BIGINT UNSIGNED AUTO_INCREMENT` primary key; required `code VARCHAR(30)` and `name VARCHAR(150)`; `created_at` and auto-updated `updated_at` timestamps; unique indexes on `code` and `name`.
+- Added `database/seed_programs.php`, a CLI-only, prepared-statement seeder. It validates the required schema and unique indexes, inserts only BSCS, detects an exact existing record without changing it, and stops safely on conflicting code/name records.
+- First seeder run inserted `BSCS - Bachelor of Science in Computer Science` as program ID 1. A second run detected the same record and made no changes.
+- Confirmed `Program::all()` feeds the registration selector and `AuthController` validates `program_id` before `User::createStudent()` writes it to `student_profiles.program_id`.
+- Added a MySQL registration association check. It created a temporary user/profile within an outer transaction, verified the joined profile referenced BSCS, rolled back, and confirmed no test account remained.
+- Registration page returned HTTP 200 and rendered the BSCS option. The read-only probe confirmed MySQL 8.4.3, 17 tables, and one program.
+- PHP syntax passed for all 38 PHP files; `php tests/authentication.php` passed 47 checks.
+- The migration file was not modified or rerun. No test account/profile data was retained.

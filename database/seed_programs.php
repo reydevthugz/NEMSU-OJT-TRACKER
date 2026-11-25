@@ -15,7 +15,12 @@ const OFFICIAL_PROGRAM_NAME = 'Bachelor of Science in Computer Science';
 function inspect_program_schema(PDO $db): array
 {
     $columnStatement = $db->prepare(
-        'SELECT column_name, column_type, is_nullable, extra, character_maximum_length
+        'SELECT
+            COLUMN_NAME AS column_name,
+            COLUMN_TYPE AS column_type,
+            IS_NULLABLE AS is_nullable,
+            EXTRA AS extra,
+            CHARACTER_MAXIMUM_LENGTH AS character_maximum_length
          FROM information_schema.columns
          WHERE table_schema = DATABASE() AND table_name = :table_name
          ORDER BY ordinal_position'
@@ -47,7 +52,11 @@ function inspect_program_schema(PDO $db): array
     }
 
     $indexStatement = $db->prepare(
-        'SELECT index_name, column_name, non_unique, seq_in_index
+        'SELECT
+            INDEX_NAME AS index_name,
+            COLUMN_NAME AS column_name,
+            NON_UNIQUE AS non_unique,
+            SEQ_IN_INDEX AS seq_in_index
          FROM information_schema.statistics
          WHERE table_schema = DATABASE() AND table_name = :table_name
          ORDER BY index_name, seq_in_index'

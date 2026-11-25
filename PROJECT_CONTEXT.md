@@ -60,4 +60,4 @@ Detailed business rules have not yet been specified. OJT workflows, eligibility,
 
 ## Current implementation status
 
-Phase 2 schema migration is complete, and student registration, login, logout, session security, CSRF protection, and role-protected placeholder dashboards are implemented. The MySQL database currently has no configured academic program rows, so student registration cannot complete until program data is supplied. No placement or other operational OJT workflows are active.
+Phase 2 schema migration is complete, and student registration, login, logout, session security, CSRF protection, and role-protected placeholder dashboards are implemented. The official Bachelor of Science in Computer Science program (BSCS) is configured for registration. No placement or other operational OJT workflows are active.

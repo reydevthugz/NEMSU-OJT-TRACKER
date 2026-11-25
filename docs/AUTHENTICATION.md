@@ -56,4 +56,4 @@ Verify the configured MySQL connection and current schema without writing data w
 php tests/mysql_readonly_probe.php
 ```
 
-For manual browser testing, ensure at least one academic program exists in `programs`; no program data or default accounts are created by this phase. Register a student, sign in, visit each `?page=dashboard/...` route while signed in, and submit logout from the top-bar menu. A student attempting another role's dashboard should receive HTTP 403. Use a disposable local account for manual checks.
+The current registration selector reads the configured BSCS program from `programs`; no default staff/admin accounts are created. Register a student, sign in, visit each `?page=dashboard/...` route while signed in, and submit logout from the top-bar menu. A student attempting another role's dashboard should receive HTTP 403. Use an approved local account for manual checks.
