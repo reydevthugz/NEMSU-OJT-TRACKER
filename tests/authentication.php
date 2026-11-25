@@ -163,6 +163,8 @@ check(csrf_token() !== $oldCsrfToken, 'Successful authentication must rotate the
 $middleware = new AuthMiddleware();
 check(!$middleware->requireRole(['adviser']), 'Middleware must deny a student an adviser-only route.');
 check(http_response_code() === 403, 'Denied role access should return HTTP 403.');
+check(!$middleware->requireRole(['admin']), 'Middleware must deny a student an administrator-only route.');
+check(http_response_code() === 403, 'Denied administrator access should return HTTP 403.');
 
 $csrfToken = csrf_token();
 $_POST['csrf_token'] = $csrfToken;

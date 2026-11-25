@@ -36,10 +36,12 @@ declare(strict_types=1);
                 'appBase' => $appBase,
             ]); ?>
             <main class="content-area" id="main-content">
-                <div class="prototype-banner" role="note">
-                    <i class="bi bi-info-circle" aria-hidden="true"></i>
-                    <span><strong>Phase 2 placeholder.</strong> This role-protected workspace is ready for later OJT modules; operational features are not active.</span>
-                </div>
+                <?php if (!str_starts_with($pageKey, 'admin/') && $pageKey !== 'dashboard/admin'): ?>
+                    <div class="prototype-banner" role="note">
+                        <i class="bi bi-info-circle" aria-hidden="true"></i>
+                        <span><strong>Phase 2 placeholder.</strong> This role-protected workspace is ready for later OJT modules; operational features are not active.</span>
+                    </div>
+                <?php endif; ?>
                 <?php app_render_component('page-header', [
                     'title' => $pageTitle,
                     'subtitle' => $pageSubtitle,
