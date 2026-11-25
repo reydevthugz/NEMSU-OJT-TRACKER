@@ -127,3 +127,52 @@ Git was not initialized in the workspace. A new repository was initialized witho
 - Registration page returned HTTP 200 and rendered the BSCS option. The read-only probe confirmed MySQL 8.4.3, 17 tables, and one program.
 - PHP syntax passed for all 38 PHP files; `php tests/authentication.php` passed 47 checks.
 - The migration file was not modified or rerun. No test account/profile data was retained.
+
+## Phase 3.5 — global UI theme and landing page
+
+- Applied the Royal Blue (`#4169e1`), Orange (`#f28c28`), Indigo Gray (`#64748b`), white-surface, and light-background palette to the existing global and component stylesheets used by the home, authentication, and role-app layouts.
+- Updated Bootstrap primary/secondary, link, navigation, focus, form, pagination, list, and progress theme variables. Form focus borders/rings and primary/secondary button focus states use the corresponding palette colors. Semantic success, warning, and error colors remain distinct.
+- Removed the old conflicting component rules and resolved existing merge-conflict markers in the touched templates/stylesheets. Kept responsive layout rules in `responsive.css` separate from component-level breakpoints.
+- Redesigned the public home page around the system introduction, about section, available foundation features, intended users, and login/registration links. Removed the role-workspace cards without changing protected routes.
+- Updated the stylesheet cache versions in the home, authentication, and app layouts. The favicon already used the Royal Blue mark.
+- Browser-tested `http://localhost/nemsu-ojt-tracker/`, login, and student registration. Computed styles confirmed Royal Blue primary (`rgb(65, 105, 225)`), Orange secondary (`rgb(242, 140, 40)`), white feature cards, Royal Blue focused form controls, and all three local stylesheets loaded with valid CSS rules.
+- Browser-checked the home page at desktop, 768px tablet, and 390px mobile widths; login and registration pages loaded at desktop and 390px mobile widths. No horizontal overflow was observed on the home page or registration page at the measured responsive widths.
+- A guest request to the administrator dashboard redirected to login; protected role dashboards were not visually tested with authenticated accounts. No authentication bypass or database change was performed.
+- PHP syntax validation passed for all PHP files under `app/`, `public/`, `routes/`, and `tests/`; `php tests/authentication.php` passed 47 checks; JavaScript syntax checks and `git diff --check` passed.
+
+## Phase 3 — UI regression audit and feature restoration
+
+### Diagnosis and Git history
+
+- Audited the active `ProgressDevelopment` branch (`825b3f6`) and confirmed it is based on Phase 2 rather than the separate local Phase 3 histories.
+- Compared the preserved `aff846a` administrator CRUD implementation and `682ebd5` read-only role/student implementation with the active routes, layouts, components, and tests. The findings and affected files are recorded in [docs/UI_UX_REGRESSION_AUDIT.md](./docs/UI_UX_REGRESSION_AUDIT.md).
+- The RIMS reference screenshot was not present in the workspace; the redesign follows the textual design direction and official palette.
+
+### Restored behavior and UI architecture
+
+- Restored reviewed administrator account/program/company/supervisor/position/skill/requirement management, administrator summary data, and focused regression tests. Existing policies preserve BSCS, prevent unsafe self-demotion/deactivation, respect relationships/capacity, and do not provide hard-delete actions.
+- Restored role-scoped read-only dashboards, eight student record routes, student/self-scoped read models, supervisor/company scoping, account notifications, and the explicit empty state for unsupported adviser assignments.
+- Restored the explicitly invoked CLI-only first-administrator provisioning utility and its safeguards. It was not run and created no account.
+- Consolidated page rendering into public, authentication, and authenticated application layouts, with one shared asset-head partial and reusable header/sidebar/footer/notification components. Reconnected role navigation and removed the nonfunctional notification button and Phase 2 placeholder banner.
+- Restored login/registration password visibility, password-confirmation feedback, staff-account password toggles, and the form confirmation prompts. Restored registration year levels 6–8, which server validation and the schema already supported.
+- Consolidated focus styling into the global stylesheet, removed obsolete Phase 0 CSS selectors, corrected the dark-blue token to `#203D78`, and applied blue table headers/status badges to management tables. The `responsive.css` shell/sidebar rules remain separate and active.
+
+### Validation and database safety
+
+- PHP syntax checks passed for all PHP files under `app/`, `public/`, `routes/`, `tests/`, and `database/`.
+- `php tests/authentication.php`: 47 checks passed.
+- `php tests/admin.php`: 44 checks passed.
+- `php tests/dashboard_read_model.php`: 23 checks passed.
+- `php tests/administrator_provisioning.php`: 16 checks passed.
+- `php tests/ui_routes.php`: 89 checks passed.
+- `node --check` passed for both local JavaScript files; `git diff --check` passed.
+- HTTP checks returned 200 for the public home, login, registration, and all three local CSS files plus `app.js`; a guest administrator-dashboard request redirected to login.
+- The MySQL read-only probe connected to MySQL 8.4.3 and confirmed the expected database, 17 tables, and one configured program. The rollback test verified the exact BSCS program/profile association, rolled back its temporary account, and a subsequent probe confirmed the database remained unchanged.
+- No migration was changed or run. No persistent database records were created, deleted, or modified. No administrator account was created.
+
+### Unverified items and remaining scope
+
+- The integrated browser page share was declined, so no browser-rendered screenshot, computed-style inspection, viewport check, or console inspection is claimed for this pass. HTTP and source/test checks passed; protected dashboards were not browser-tested with an authenticated account.
+- No administrator session was available for end-to-end CRUD interaction in a browser. CRUD model behavior and data-safety rules are covered by the isolated administrator tests.
+- Matching/assignment, placement approvals, requirement uploads, attendance writes/hour calculations, evaluations, notification delivery, and reporting remain unimplemented. No adviser assignment relationship exists in the current schema.
+- The supplied visual reference image was unavailable locally; the textual design direction was used.

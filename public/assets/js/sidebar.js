@@ -9,10 +9,12 @@
         return;
     }
 
+    const mobile = window.matchMedia('(max-width: 991.98px)');
     const setOpen = (isOpen) => {
         document.body.classList.toggle('sidebar-open', isOpen);
         toggleButtons.forEach((button) => {
             button.setAttribute('aria-expanded', String(isOpen));
+            button.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
         });
     };
 
@@ -25,20 +27,23 @@
         });
     });
 
-    closeButton.addEventListener('click', () => {
+    const close = () => {
         setOpen(false);
-    });
+        toggleButtons[0].focus();
+    };
+
+    closeButton.addEventListener('click', close);
+    mobile.addEventListener('change', () => setOpen(false));
 
     sidebar.addEventListener('click', (event) => {
-        if (event.target.closest('a') && window.matchMedia('(max-width: 991.98px)').matches) {
+        if (event.target.closest('a') && mobile.matches) {
             setOpen(false);
         }
     });
 
     document.addEventListener('keydown', (event) => {
         if (event.key === 'Escape' && document.body.classList.contains('sidebar-open')) {
-            setOpen(false);
-            toggleButtons[0].focus();
+            close();
         }
     });
 })();

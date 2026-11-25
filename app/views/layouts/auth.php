@@ -2,26 +2,12 @@
 
 declare(strict_types=1);
 
+$isRegistration = $pageKey === 'register';
 ?>
 <!doctype html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="Secure NEMSU OJT TRACKER account access">
-    <title><?= app_escape($pageTitle) ?> | NEMSU OJT TRACKER</title>
-    <link rel="icon" href="<?= app_escape($assetBase) ?>/assets/images/favicon.svg?v=3" type="image/svg+xml">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" rel="stylesheet">
-<<<<<<< Updated upstream
-    <link href="<?= app_escape($assetBase) ?>/assets/css/app.css?v=1" rel="stylesheet">
-    <link href="<?= app_escape($assetBase) ?>/assets/css/components.css?v=1" rel="stylesheet">
-    <link href="<?= app_escape($assetBase) ?>/assets/css/responsive.css?v=1" rel="stylesheet">
-=======
-    <link href="<?= app_escape($assetBase) ?>/assets/css/app.css?v=3" rel="stylesheet">
-    <link href="<?= app_escape($assetBase) ?>/assets/css/components.css?v=3" rel="stylesheet">
-    <link href="<?= app_escape($assetBase) ?>/assets/css/responsive.css?v=3" rel="stylesheet">
->>>>>>> Stashed changes
+    <?php require __DIR__ . '/head.php'; ?>
 </head>
 <body class="auth-body">
     <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -31,25 +17,34 @@ declare(strict_types=1);
                 <span class="brand-mark" aria-hidden="true">N</span>
                 <span class="brand-name">NEMSU <strong>OJT TRACKER</strong></span>
             </a>
-            <p class="auth-brand-kicker">On-the-Job Training</p>
-            <h1>Building pathways from campus to career.</h1>
-            <p class="auth-brand-copy">A proposed placement and monitoring experience for the NEMSU OJT community.</p>
-            <div class="prototype-chip"><i class="bi bi-shield-check" aria-hidden="true"></i> Secure account access</div>
+            <div>
+                <?php if ($isRegistration): ?>
+                    <h1>Create your student account.</h1>
+                    <p class="auth-brand-copy">Add your academic details and sign-in information to access your OJT records.</p>
+                    <ol class="registration-steps" aria-label="Registration progress">
+                        <li data-registration-progress>Student information</li>
+                        <li data-registration-progress>Account information</li>
+                    </ol>
+                <?php else: ?>
+                    <h1>Welcome to your OJT workspace.</h1>
+                    <p class="auth-brand-copy">Access your records and follow your training journey from campus to workplace.</p>
+                    <div class="auth-illustration" aria-hidden="true">
+                        <i class="bi bi-stars"></i>
+                        <i class="bi bi-person-workspace"></i>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <p class="auth-brand-footer">North Eastern Mindanao State University</p>
         </section>
         <section class="auth-content-panel">
             <div class="auth-content-inner">
-                <div class="auth-mobile-brand">
-                    <span class="brand-mark" aria-hidden="true">N</span>
-                    <span class="brand-name">NEMSU <strong>OJT TRACKER</strong></span>
-                </div>
-                <p class="eyebrow"><?= app_escape($pageSubtitle) ?></p>
+                <p class="auth-back-link"><a href="<?= app_escape(app_route_url('home', $appBase)) ?>"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to home</a></p>
                 <h2 class="auth-heading"><?= app_escape($pageTitle) ?></h2>
+                <p class="auth-description"><?= app_escape($pageSubtitle) ?></p>
                 <?php require $viewPath; ?>
-                <p class="auth-back-link"><a href="<?= app_escape(app_route_url('home', $appBase)) ?>"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to system home</a></p>
             </div>
         </section>
     </main>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="<?= app_escape($assetBase) ?>/assets/js/app.js?v=1"></script>
+    <script src="<?= app_escape($assetBase) ?>/assets/js/app.js?v=3"></script>
 </body>
 </html>

@@ -1,43 +1,31 @@
 :root {
     color-scheme: light;
-<<<<<<< Updated upstream
-    --nemsu-navy: #12304a;
-    --nemsu-blue: #1d5e83;
-    --nemsu-gold: #e8b84a;
-    --muted-text: #607181;
-}
-
-body {
-    background:
-        radial-gradient(ellipse at 12% 15%, rgba(29, 94, 131, 0.1), transparent 34rem),
-        #f4f7fa;
-    color: var(--nemsu-navy);
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-=======
-    --primary: #4169e1;
-    --primary-hover: #3156c5;
+    --primary: #203D78;
+    --accent-blue: #4169E1;
+    --primary-hover: #172F60;
     --secondary: #f28c28;
     --secondary-hover: #db7617;
     --indigo-gray: #64748b;
     --background: #f4f7fb;
     --surface: #ffffff;
-    --text-primary: #1e293b;
+    --text-primary: #142B4A;
     --text-secondary: #64748b;
-    --dark-navy: #142b4a;
     --border: #e2e8f0;
     --primary-soft: #eef3ff;
     --secondary-soft: #fff3e6;
     --neutral-soft: #f8fafc;
-    --success: #047857;
+    --success: #16A34A;
+    --success-ink: #166534;
     --success-soft: #ecfdf5;
-    --warning: #92400e;
+    --warning: #F59E0B;
+    --warning-ink: #92400E;
     --warning-soft: #fffbeb;
-    --danger: #b91c1c;
+    --danger: #DC2626;
     --danger-soft: #fef2f2;
-    --shadow-color: rgba(20, 43, 74, 0.08);
+    --shadow-color: rgba(32, 61, 120, 0.08);
 
     --bs-primary: var(--primary);
-    --bs-primary-rgb: 65, 105, 225;
+    --bs-primary-rgb: 32, 61, 120;
     --bs-primary-text-emphasis: var(--primary-hover);
     --bs-primary-bg-subtle: var(--primary-soft);
     --bs-primary-border-subtle: #c7d4ff;
@@ -50,6 +38,7 @@ body {
     --bs-link-hover-color: var(--primary-hover);
     --bs-nav-link-color: var(--indigo-gray);
     --bs-nav-link-hover-color: var(--primary);
+    --bs-secondary-color: var(--text-secondary);
     --bs-body-bg: var(--background);
     --bs-body-color: var(--text-primary);
     --bs-border-color: var(--border);
@@ -57,13 +46,16 @@ body {
     --bs-dropdown-link-active-bg: var(--primary);
     --bs-list-group-active-bg: var(--primary);
     --bs-list-group-active-border-color: var(--primary);
+    --bs-nav-pills-link-active-bg: var(--primary);
+    --bs-pagination-active-bg: var(--primary);
+    --bs-pagination-active-border-color: var(--primary);
+    --bs-progress-bar-bg: var(--primary);
 }
 
 body {
     min-width: 320px;
     background: var(--background);
     color: var(--text-primary);
-    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
     line-height: 1.55;
 }
 
@@ -88,6 +80,18 @@ a:hover {
     --bs-btn-hover-color: var(--primary-hover);
 }
 
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 0.25rem rgba(65, 105, 225, 0.2);
+}
+
+.form-check-input:checked {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
 :focus-visible {
     outline: 3px solid rgba(65, 105, 225, 0.42);
     outline-offset: 2px;
@@ -107,27 +111,6 @@ a:hover {
 
 .skip-link:focus {
     transform: translateY(0);
->>>>>>> Stashed changes
-}
-
-.welcome-card {
-    width: min(100%, 760px);
-    border: 1px solid var(--border);
-    border-radius: 1.25rem;
-    background: var(--surface);
-    box-shadow: 0 1.5rem 4rem var(--shadow-color);
-}
-
-.brand-mark {
-    display: grid;
-    width: 3.5rem;
-    height: 3.5rem;
-    place-items: center;
-    border-radius: 1rem;
-    background: var(--primary);
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
 }
 
 .eyebrow {
@@ -138,35 +121,7 @@ a:hover {
     text-transform: uppercase;
 }
 
-.system-title {
-    color: var(--text-secondary);
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-}
-
-.status-note {
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    align-items: flex-start;
-    gap: 0.65rem;
-    border-radius: 0.75rem;
-    background: var(--primary-soft);
-    color: var(--dark-navy);
-    padding: 0.85rem 1rem;
-    text-align: left;
-}
-
-.status-indicator {
-    width: 0.65rem;
-    height: 0.65rem;
-    flex: 0 0 auto;
-    margin-top: 0.35rem;
-    border-radius: 50%;
-    background: var(--success);
-    box-shadow: 0 0 0 0.25rem rgba(4, 120, 87, 0.12);
-}
-
 ::selection {
     background: var(--primary-soft);
-    color: var(--dark-navy);
+    color: var(--primary);
 }
