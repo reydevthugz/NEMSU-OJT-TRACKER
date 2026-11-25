@@ -9,7 +9,7 @@ $user = $adminData['user'];
     <div class="panel-heading">
         <div>
             <h2><?= app_escape($user['name']) ?></h2>
-            <p><?= app_escape($user['email']) ?> · Account #<?= (int) $user['id'] ?></p>
+            <p><?= app_escape($user['email']) ?> · Account #<?= (int) $user['id'] ?> · <?php app_render_component('status-badge', ['status' => $user['status']]); ?></p>
         </div>
         <a class="btn btn-outline-secondary" href="<?= app_escape(app_route_url('admin/users', $appBase)) ?>">Back to accounts</a>
     </div>

@@ -6,19 +6,33 @@ On-the-Job Training Placement and Monitoring System built with native PHP, Boots
 
 - PHP 8.3 with PDO MySQL
 - MySQL 8.4
-- Apache with URL rewriting enabled (Laragon configuration)
+- Apache (Laragon rewrite configuration)
 
 ## Local setup
 
 1. Copy `.env.example` to `.env` if the local environment file does not exist.
-2. Set `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` to the values configured for your own local MySQL instance. An empty password is valid when that is how the local database account is configured.
-3. Use the already-installed Phase 2 schema. Do not rerun `database/migrate.php` on a database where the migration has already been applied.
-4. Open `http://localhost/nemsu-ojt-tracker/` in Laragon.
-5. Sign in with an administrator account provisioned by the database owner to open the protected administrator area. The project does not create a default administrator or default password.
+2. Set `DB_HOST`, `DB_PORT`, `DB_DATABASE`, `DB_USERNAME`, and `DB_PASSWORD` for your local MySQL account. Never place `.env` under `public/` or commit it.
+3. Use the existing schema. Do not rerun `database/migrate.php` on a database where the migration has already been applied.
+4. Open `http://localhost/nemsu-ojt-tracker/`.
+5. Students can register through the public registration page. Administrator access requires an explicitly provisioned administrator; the application does not create a default account.
 
-Never commit `.env` or copy it under `public/`.
+If the database owner authorizes initial administrator provisioning, run the CLI-only PowerShell prompt from the project root:
 
-The configured database currently has no user records, so there is no administrator account available for interactive sign-in yet. Provision the initial administrator through the project owner's trusted account-provisioning procedure; do not enable public administrator registration.
+```powershell
+.\database\provision-admin.ps1
+```
+
+The utility refuses to create a second administrator or reuse an existing email. It is not invoked by the web application and was not run as part of this audit.
+
+## Implemented features
+
+- Student registration, login/logout, secure sessions, password hashing, CSRF protection, and role-based access checks.
+- Administrator management of accounts and academic/company reference data, including supervisor-company associations and position capacity rules.
+- Read-only student profile/skills/preferences/placement/requirements/attendance/progress/notification pages.
+- Database-backed role summaries; supervisor data is limited to companies linked to that account.
+- Public, authentication, and authenticated application layouts with responsive Royal Blue/Orange theming.
+
+Master records are not hard-deleted. The current schema has no adviser-to-student assignment relationship, and placement matching/assignment, approvals, attendance updates/hour calculations, evaluations, notification delivery, and reports are not implemented.
 
 ## Phase 3 administrator features
 
@@ -37,21 +51,18 @@ All management pages require the administrator role; state-changing forms use PO
 
 ## Tests
 
-Run the isolated tests from the project root:
+Run isolated tests from the project root:
 
 ```powershell
 php tests\authentication.php
 php tests\admin.php
+php tests\dashboard_read_model.php
+php tests\administrator_provisioning.php
+php tests\ui_routes.php
 ```
 
-Both use in-memory SQLite and do not write to the configured MySQL database. The MySQL dashboard check is read-only and can be run with:
+`tests\mysql_readonly_probe.php` inspects the configured database without writing. `tests\mysql_registration_rollback.php` verifies the BSCS association inside a transaction and rolls back its temporary account.
 
-```powershell
-php -r "require 'app/bootstrap.php'; require 'app/models/AdminModel.php'; echo json_encode((new AdminModel(database_connection()))->dashboardStats(), JSON_THROW_ON_ERROR), PHP_EOL;"
-```
+## Architecture
 
-Lint PHP files with `php -l`; no package installation or database migration is needed for Phase 3.
-
-## Scope and next phase
-
-Phase 3 covers administrator access and master-data management only. Placement assignment/matching, student requirement submissions, attendance, OJT-hour calculations, monitoring, evaluations, notifications, and reporting are not implemented.
+`public/index.php` dispatches `routes/web.php`. Controllers, models, middleware, helpers, layouts, and views live under `app/`. Database configuration is read from the project-root `.env`; migrations and explicit CLI utilities live under `database/`. No framework or Composer dependencies are required.

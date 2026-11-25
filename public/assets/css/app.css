@@ -1,71 +1,127 @@
 :root {
     color-scheme: light;
-    --nemsu-navy: #12304a;
-    --nemsu-blue: #1d5e83;
-    --nemsu-gold: #e8b84a;
-    --muted-text: #607181;
+    --primary: #203D78;
+    --accent-blue: #4169E1;
+    --primary-hover: #172F60;
+    --secondary: #f28c28;
+    --secondary-hover: #db7617;
+    --indigo-gray: #64748b;
+    --background: #f4f7fb;
+    --surface: #ffffff;
+    --text-primary: #142B4A;
+    --text-secondary: #64748b;
+    --border: #e2e8f0;
+    --primary-soft: #eef3ff;
+    --secondary-soft: #fff3e6;
+    --neutral-soft: #f8fafc;
+    --success: #16A34A;
+    --success-ink: #166534;
+    --success-soft: #ecfdf5;
+    --warning: #F59E0B;
+    --warning-ink: #92400E;
+    --warning-soft: #fffbeb;
+    --danger: #DC2626;
+    --danger-soft: #fef2f2;
+    --shadow-color: rgba(32, 61, 120, 0.08);
+
+    --bs-primary: var(--primary);
+    --bs-primary-rgb: 32, 61, 120;
+    --bs-primary-text-emphasis: var(--primary-hover);
+    --bs-primary-bg-subtle: var(--primary-soft);
+    --bs-primary-border-subtle: #c7d4ff;
+    --bs-secondary: var(--secondary);
+    --bs-secondary-rgb: 242, 140, 40;
+    --bs-secondary-text-emphasis: var(--secondary-hover);
+    --bs-secondary-bg-subtle: var(--secondary-soft);
+    --bs-secondary-border-subtle: #f7c18a;
+    --bs-link-color: var(--primary);
+    --bs-link-hover-color: var(--primary-hover);
+    --bs-nav-link-color: var(--indigo-gray);
+    --bs-nav-link-hover-color: var(--primary);
+    --bs-secondary-color: var(--text-secondary);
+    --bs-body-bg: var(--background);
+    --bs-body-color: var(--text-primary);
+    --bs-border-color: var(--border);
+    --bs-focus-ring-color: rgba(65, 105, 225, 0.25);
+    --bs-dropdown-link-active-bg: var(--primary);
+    --bs-list-group-active-bg: var(--primary);
+    --bs-list-group-active-border-color: var(--primary);
+    --bs-nav-pills-link-active-bg: var(--primary);
+    --bs-pagination-active-bg: var(--primary);
+    --bs-pagination-active-border-color: var(--primary);
+    --bs-progress-bar-bg: var(--primary);
 }
 
 body {
-    background:
-        radial-gradient(ellipse at 12% 15%, rgba(29, 94, 131, 0.1), transparent 34rem),
-        #f4f7fa;
-    color: var(--nemsu-navy);
+    min-width: 320px;
+    background: var(--background);
+    color: var(--text-primary);
+    line-height: 1.55;
+}
+
+body,
+button,
+input,
+select,
+textarea {
     font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
-.welcome-card {
-    width: min(100%, 760px);
-    border: 1px solid rgba(18, 48, 74, 0.08);
-    border-radius: 1.25rem;
-    background: #fff;
-    box-shadow: 0 1.5rem 4rem rgba(18, 48, 74, 0.1);
+a {
+    color: var(--primary);
 }
 
-.brand-mark {
-    display: grid;
-    width: 3.5rem;
-    height: 3.5rem;
-    place-items: center;
-    border-radius: 1rem;
-    background: var(--nemsu-navy);
-    color: #fff;
-    font-size: 1.5rem;
-    font-weight: 700;
+a:hover {
+    color: var(--primary-hover);
+}
+
+.btn-link {
+    --bs-btn-color: var(--primary);
+    --bs-btn-hover-color: var(--primary-hover);
+}
+
+.form-control:focus,
+.form-select:focus,
+.form-check-input:focus {
+    border-color: var(--accent-blue);
+    box-shadow: 0 0 0 0.25rem rgba(65, 105, 225, 0.2);
+}
+
+.form-check-input:checked {
+    border-color: var(--primary);
+    background-color: var(--primary);
+}
+
+:focus-visible {
+    outline: 3px solid rgba(65, 105, 225, 0.42);
+    outline-offset: 2px;
+}
+
+.skip-link {
+    position: fixed;
+    z-index: 2000;
+    top: 0.5rem;
+    left: 0.5rem;
+    transform: translateY(-160%);
+    border-radius: 0.5rem;
+    background: var(--surface);
+    padding: 0.65rem 0.9rem;
+    box-shadow: 0 0.5rem 1.5rem var(--shadow-color);
+}
+
+.skip-link:focus {
+    transform: translateY(0);
 }
 
 .eyebrow {
-    color: var(--nemsu-blue);
+    color: var(--primary);
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.14em;
     text-transform: uppercase;
 }
 
-.system-title {
-    color: var(--muted-text);
-    font-size: clamp(1rem, 2.5vw, 1.2rem);
-}
-
-.status-note {
-    display: flex;
-    width: fit-content;
-    max-width: 100%;
-    align-items: flex-start;
-    gap: 0.65rem;
-    border-radius: 0.75rem;
-    background: #f1f7f8;
-    color: var(--nemsu-navy);
-    padding: 0.85rem 1rem;
-    text-align: left;
-}
-
-.status-indicator {
-    width: 0.65rem;
-    height: 0.65rem;
-    flex: 0 0 auto;
-    margin-top: 0.35rem;
-    border-radius: 50%;
-    background: #368b69;
-    box-shadow: 0 0 0 0.25rem rgba(54, 139, 105, 0.12);
+::selection {
+    background: var(--primary-soft);
+    color: var(--primary);
 }

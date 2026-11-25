@@ -42,7 +42,7 @@ $editing = is_array($record);
     <?php if ($listing['items'] === []): ?>
         <?php app_render_component('empty-state', ['title' => 'No programs found', 'message' => 'Add the official academic programs when approved.']); ?>
     <?php else: ?>
-        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Code</th><th>Program name</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
+        <div class="table-responsive"><table class="table data-table align-middle"><caption class="visually-hidden">Academic programs</caption><thead><tr><th>Code</th><th>Program name</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
             <?php foreach ($listing['items'] as $program): ?>
                 <tr>
                     <td><?= app_escape($program['code']) ?></td><td><?= app_escape($program['name']) ?></td>

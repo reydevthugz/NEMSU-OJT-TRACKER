@@ -26,10 +26,10 @@ $filters = $adminData['filters'];
     <?php if ($listing['items'] === []): ?>
         <?php app_render_component('empty-state', ['title' => 'No supervisor associations', 'message' => 'Create supervisor accounts in user management, then associate them with companies.']); ?>
     <?php else: ?>
-        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Supervisor</th><th>Email</th><th>Company</th><th>Account status</th><th>Update association</th></tr></thead><tbody>
+        <div class="table-responsive"><table class="table data-table align-middle"><caption class="visually-hidden">Supervisor-company associations</caption><thead><tr><th>Supervisor</th><th>Email</th><th>Company</th><th>Account status</th><th>Update association</th></tr></thead><tbody>
             <?php foreach ($listing['items'] as $association): ?>
                 <tr>
-                    <td><?= app_escape($association['supervisor_name']) ?></td><td><?= app_escape($association['supervisor_email']) ?></td><td><?= app_escape($association['company_name']) ?></td><td><?= app_escape(ucfirst($association['supervisor_status'])) ?></td>
+                    <td><?= app_escape($association['supervisor_name']) ?></td><td><?= app_escape($association['supervisor_email']) ?></td><td><?= app_escape($association['company_name']) ?></td><td><?php app_render_component('status-badge', ['status' => $association['supervisor_status']]); ?></td>
                     <td>
                         <?php if ($association['supervisor_status'] !== 'active'): ?>
                             <span class="text-body-secondary">Reactivate the supervisor account before changing this association.</span>

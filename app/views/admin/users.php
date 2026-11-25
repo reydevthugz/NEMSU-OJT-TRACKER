@@ -35,11 +35,17 @@ $filters = $adminData['filters'];
         </div>
         <div class="col-12 col-md-4">
             <label class="form-label" for="staff-password">Initial password</label>
-            <input class="form-control" id="staff-password" type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+            <div class="password-field">
+                <input class="form-control" id="staff-password" type="password" name="password" minlength="8" maxlength="72" autocomplete="new-password" required>
+                <button class="password-toggle" type="button" data-password-toggle aria-controls="staff-password" aria-pressed="false" aria-label="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </div>
         </div>
         <div class="col-12 col-md-4">
             <label class="form-label" for="staff-password-confirm">Confirm password</label>
-            <input class="form-control" id="staff-password-confirm" type="password" name="password_confirmation" minlength="8" maxlength="72" autocomplete="new-password" required>
+            <div class="password-field">
+                <input class="form-control" id="staff-password-confirm" type="password" name="password_confirmation" minlength="8" maxlength="72" autocomplete="new-password" required>
+                <button class="password-toggle" type="button" data-password-toggle aria-controls="staff-password-confirm" aria-pressed="false" aria-label="Show password"><i class="bi bi-eye" aria-hidden="true"></i></button>
+            </div>
         </div>
         <div class="col-12"><button class="btn btn-primary" type="submit">Create staff account</button></div>
     </form>
@@ -81,7 +87,8 @@ $filters = $adminData['filters'];
         <?php app_render_component('empty-state', ['title' => 'No user accounts found', 'message' => 'Try changing your search or filters.']); ?>
     <?php else: ?>
         <div class="table-responsive">
-            <table class="table align-middle">
+            <table class="table data-table align-middle">
+                <caption class="visually-hidden">User accounts and their roles and statuses</caption>
                 <thead><tr><th>Name</th><th>Email</th><th>Student number</th><th>Role</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead>
                 <tbody>
                     <?php foreach ($listing['items'] as $user): ?>
@@ -90,7 +97,7 @@ $filters = $adminData['filters'];
                             <td><?= app_escape($user['email']) ?></td>
                             <td><?= app_escape($user['student_number'] ?? '—') ?></td>
                             <td><?= app_escape(ucfirst($user['role'])) ?></td>
-                            <td><?= app_escape(ucfirst($user['status'])) ?></td>
+                            <td><?php app_render_component('status-badge', ['status' => $user['status']]); ?></td>
                             <td><a class="btn btn-sm btn-outline-primary" href="<?= app_escape(app_route_url('admin/user', $appBase) . '&id=' . (int) $user['id']) ?>">View</a></td>
                         </tr>
                     <?php endforeach; ?>

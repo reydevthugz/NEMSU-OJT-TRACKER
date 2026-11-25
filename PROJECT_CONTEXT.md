@@ -16,11 +16,11 @@ These objectives describe the intended system; Phase 0 does not implement placem
 
 The user roles are students, advisers, coordinators, company supervisors, and administrators. Authentication and role checks were added in Phase 2; they were not part of Phase 0.
 
-## Planned system modules
+## System modules and current scope
 
-The project requirements identify future modules for student and company management, skills, placement matching and assignment, coordinator approval, document submissions, attendance and OJT hours, progress monitoring, supervisor evaluation, notifications, dashboards, and reports. None of these modules is included in Phase 0.
+Implemented foundation features include student registration and sign-in, role-protected workspaces, administrator account/reference-data management, read-only student record pages, role-specific database-backed summaries, and account-scoped notifications.
 
-Administrator authentication, dashboard summaries, user account management, and master-data management for programs, companies, supervisors, positions, skills, and requirement types were implemented in Phase 3. Placement workflows and student submissions remain future work.
+The broader product may later include placement matching/assignment, coordinator approval, document submissions, attendance verification, OJT-hour calculations, progress actions, supervisor evaluations, notification delivery, and reports. Those operational workflows are not implemented by the current build.
 
 ## Technology stack
 
@@ -31,7 +31,7 @@ Administrator authentication, dashboard summaries, user account management, and 
 
 ## Architecture
 
-The application uses a lightweight MVC-inspired structure: controllers, models, views, middleware, and helpers are under `app/`. Configuration, database migrations, the public web root, and routes remain at the project root in `config/`, `database/`, `public/`, and `routes/`; `storage/` is also at the project root. `public/index.php` is the web entry point. The project-root Apache `.htaccess` denies direct requests to application/configuration directories and internally routes requests to `public/`.
+The application uses a lightweight MVC-inspired structure: controllers, models, views, middleware, and helpers are under `app/`. Public, authentication, and authenticated application pages use separate canonical layouts with shared asset markup and reusable components. Configuration, database migrations, the public web root, and routes remain at the project root in `config/`, `database/`, `public/`, and `routes/`; `storage/` is also at the project root. `public/index.php` is the web entry point. The project-root Apache `.htaccess` denies direct requests to application/configuration directories and internally routes requests to `public/`.
 
 ## Database decisions
 
@@ -43,7 +43,11 @@ The application uses a lightweight MVC-inspired structure: controllers, models, 
 
 ## Important business rules
 
-Detailed business rules have not yet been specified. OJT workflows, eligibility, placement, approval, attendance, hour calculations, and evaluation rules must be defined and approved before their future implementation. Phase 0 enforces no business rules.
+- Public registration creates student accounts only; passwords are hashed and role access is enforced server-side.
+- Student record views are scoped to the signed-in student's profile; supervisor placement summaries are scoped to linked companies.
+- The current schema has no adviser-to-student assignment relationship, so the adviser dashboard does not expose student records.
+- Administrator management preserves the official BSCS program, prevents unsafe self-demotion/deactivation, respects company/placement relationships and capacity rules, and uses status changes rather than deleting master records.
+- Placement matching/assignment, approval, attendance verification, OJT-hour calculations, and evaluations remain unavailable until their business rules are approved and implemented.
 
 ## Development restrictions
 
@@ -58,11 +62,12 @@ Detailed business rules have not yet been specified. OJT workflows, eligibility,
 - Phase 0: Project initialization and environment foundation.
 - Phase 1: UI/UX structure, reusable PHP view components, authentication page designs, role dashboard prototypes, and responsive layouts.
 - Phase 2: Relational database design, native migrations, secure student registration/login/logout, sessions, CSRF, and reusable server-side role middleware.
-- Phase 3: Administrator access, dashboard statistics, account administration, and schema-backed master-data management.
-- Subsequent phases: Placement matching and assignment, requirements submissions, attendance, OJT-hour calculations, monitoring, evaluation, notifications, and reporting remain unimplemented.
+- Phase 3: Administrator account/reference-data management and read-only role/student records.
+- Phase 3.5: Global UI theme and unified public, authentication, and application layouts.
+- Subsequent phases: To be defined and approved by the project owner. Full placement, requirement-submission, attendance, evaluation, notification-delivery, and reporting workflows remain unimplemented.
 
 ## Current implementation status
 
-Phase 2 schema migration is complete, and student registration, login, logout, session security, CSRF protection, and role-protected dashboards are implemented. The official Bachelor of Science in Computer Science program (BSCS) is configured for registration and protected from administrative edits. Phase 3 administrator pages cover account management and supported master data. No placement assignment, document submission, attendance, evaluation, or other operational OJT workflow is active.
+The Phase 2 schema migration is complete. Student registration, login/logout, session security, CSRF protection, and role middleware remain in place. Phase 3 administrator management and read-only, role-scoped dashboard/student views are available. The current MySQL verification confirmed 17 tables and one configured program; the rollback test verified that program is the official BSCS record. The global UI uses Royal Blue `#4169E1`, Orange `#F28C28`, Indigo Gray `#64748B`, white surfaces, and dark blue `#203D78`. The public home page presents the system introduction, available foundation features, intended users, and account links without exposing protected dashboards. Operational placement workflows remain inactive.
 
-The Phase 2 migration is complete and must not be rerun or modified as part of Phase 3. No default administrator or sample operational records are created. The current configured database contains no users, so an administrator must be provisioned by the project owner before the administrator pages can be exercised interactively.
+The official BSCS program is protected from administrative edits. Initial administrator provisioning is an explicit CLI operation, and the application does not create a default account.

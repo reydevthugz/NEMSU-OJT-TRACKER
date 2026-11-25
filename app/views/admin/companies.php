@@ -13,7 +13,7 @@ $companyValue = static fn (string $key): string => (string) ($record[$key] ?? ''
 <?php if (is_array($viewRecord)): ?>
     <section class="panel-card mb-4">
         <div class="panel-heading">
-            <div><h2><?= app_escape($viewRecord['name']) ?></h2><p>Company details · <?= app_escape(ucfirst($viewRecord['status'])) ?></p></div>
+            <div><h2><?= app_escape($viewRecord['name']) ?></h2><p>Company details · <?php app_render_component('status-badge', ['status' => $viewRecord['status']]); ?></p></div>
             <div class="d-flex gap-2">
                 <a class="btn btn-primary" href="<?= app_escape(app_route_url('admin/companies', $appBase) . '&edit_id=' . (int) $viewRecord['id']) ?>">Edit company</a>
                 <a class="btn btn-outline-secondary" href="<?= app_escape(app_route_url('admin/companies', $appBase)) ?>">Close details</a>
@@ -60,9 +60,9 @@ $companyValue = static fn (string $key): string => (string) ($record[$key] ?? ''
     <?php if ($listing['items'] === []): ?>
         <?php app_render_component('empty-state', ['title' => 'No companies found', 'message' => 'Add verified company records when available.']); ?>
     <?php else: ?>
-        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Company</th><th>Contact</th><th>Email</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
+        <div class="table-responsive"><table class="table data-table align-middle"><caption class="visually-hidden">Registered companies</caption><thead><tr><th>Company</th><th>Contact</th><th>Email</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
             <?php foreach ($listing['items'] as $company): ?><tr>
-                <td><?= app_escape($company['name']) ?></td><td><?= app_escape($company['contact_name'] ?? '—') ?></td><td><?= app_escape($company['contact_email'] ?? '—') ?></td><td><?= app_escape(ucfirst($company['status'])) ?></td>
+                <td><?= app_escape($company['name']) ?></td><td><?= app_escape($company['contact_name'] ?? '—') ?></td><td><?= app_escape($company['contact_email'] ?? '—') ?></td><td><?php app_render_component('status-badge', ['status' => $company['status']]); ?></td>
                 <td class="text-nowrap"><a class="btn btn-sm btn-outline-secondary" href="<?= app_escape(app_route_url('admin/companies', $appBase) . '&view_id=' . (int) $company['id']) ?>">View</a> <a class="btn btn-sm btn-outline-primary" href="<?= app_escape(app_route_url('admin/companies', $appBase) . '&edit_id=' . (int) $company['id']) ?>">Edit</a></td>
             </tr><?php endforeach; ?>
         </tbody></table></div>

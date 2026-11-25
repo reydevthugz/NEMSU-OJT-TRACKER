@@ -2,8 +2,14 @@
 
 declare(strict_types=1);
 
+$variant = $variant ?? 'app';
 ?>
 <footer class="app-footer">
-    <span>NEMSU OJT TRACKER <span class="footer-divider">·</span> Role-protected workspace</span>
-    <span>Phase 2 authentication foundation</span>
+    <?php if ($variant === 'public'): ?>
+        <span>NEMSU OJT TRACKER <span class="footer-divider">·</span> North Eastern Mindanao State University</span>
+        <span>On-the-Job Training Placement and Monitoring System</span>
+    <?php else: ?>
+        <span>NEMSU OJT TRACKER <span class="footer-divider">·</span> Role-protected workspace</span>
+        <span>On-the-Job Training Placement and Monitoring System</span>
+    <?php endif; ?>
 </footer>

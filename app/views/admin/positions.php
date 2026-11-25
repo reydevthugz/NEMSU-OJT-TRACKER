@@ -36,9 +36,9 @@ $editing = is_array($record);
     <?php if ($listing['items'] === []): ?>
         <?php app_render_component('empty-state', ['title' => 'No positions found', 'message' => 'Add positions only after receiving verified company information.']); ?>
     <?php else: ?>
-        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Company</th><th>Position</th><th>Capacity</th><th>Active placements</th><th>Remaining slots</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
+        <div class="table-responsive"><table class="table data-table align-middle"><caption class="visually-hidden">Company positions and current capacity</caption><thead><tr><th>Company</th><th>Position</th><th>Capacity</th><th>Active placements</th><th>Remaining slots</th><th>Status</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody>
             <?php foreach ($listing['items'] as $position): ?><tr>
-                <td><?= app_escape($position['company_name']) ?></td><td><?= app_escape($position['title']) ?></td><td><?= (int) $position['available_slots'] ?></td><td><?= (int) $position['active_placements'] ?></td><td><?= (int) $position['remaining_slots'] ?></td><td><?= app_escape(ucfirst($position['status'])) ?></td>
+                <td><?= app_escape($position['company_name']) ?></td><td><?= app_escape($position['title']) ?></td><td><?= (int) $position['available_slots'] ?></td><td><?= (int) $position['active_placements'] ?></td><td><?= (int) $position['remaining_slots'] ?></td><td><?php app_render_component('status-badge', ['status' => $position['status']]); ?></td>
                 <td><a class="btn btn-sm btn-outline-primary" href="<?= app_escape(app_route_url('admin/positions', $appBase) . '&edit_id=' . (int) $position['id']) ?>">Edit</a></td>
             </tr><?php endforeach; ?>
         </tbody></table></div>

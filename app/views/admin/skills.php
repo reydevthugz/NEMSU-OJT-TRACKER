@@ -27,7 +27,7 @@ $editing = is_array($record);
     <?php if ($listing['items'] === []): ?>
         <?php app_render_component('empty-state', ['title' => 'No skills found', 'message' => 'Add approved skills to build the catalog.']); ?>
     <?php else: ?>
-        <div class="table-responsive"><table class="table align-middle"><thead><tr><th>Skill</th><th>Description</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody><?php foreach ($listing['items'] as $skill): ?><tr><td><?= app_escape($skill['name']) ?></td><td><?= app_escape($skill['description'] ?? '—') ?></td><td><a class="btn btn-sm btn-outline-primary" href="<?= app_escape(app_route_url('admin/skills', $appBase) . '&edit_id=' . (int) $skill['id']) ?>">Edit</a></td></tr><?php endforeach; ?></tbody></table></div>
+        <div class="table-responsive"><table class="table data-table align-middle"><caption class="visually-hidden">Skills catalog</caption><thead><tr><th>Skill</th><th>Description</th><th><span class="visually-hidden">Actions</span></th></tr></thead><tbody><?php foreach ($listing['items'] as $skill): ?><tr><td><?= app_escape($skill['name']) ?></td><td><?= app_escape($skill['description'] ?? '—') ?></td><td><a class="btn btn-sm btn-outline-primary" href="<?= app_escape(app_route_url('admin/skills', $appBase) . '&edit_id=' . (int) $skill['id']) ?>">Edit</a></td></tr><?php endforeach; ?></tbody></table></div>
         <?php require __DIR__ . '/_pagination.php'; ?>
     <?php endif; ?>
 </section>

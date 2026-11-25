@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 ?>
-<form class="prototype-form registration-form" method="post" action="<?= app_escape(app_route_url('home', $appBase)) ?>" data-prototype-scope>
+<form class="auth-form registration-form" id="registration-form" method="post" action="<?= app_escape(app_route_url('home', $appBase)) ?>">
     <input type="hidden" name="action" value="register">
     <input type="hidden" name="csrf_token" value="<?= app_escape(csrf_token()) ?>">
     <?php $registrationErrors = take_flash('errors'); ?>
@@ -27,8 +27,8 @@ declare(strict_types=1);
     <?php elseif ($programOptions === []): ?>
         <div class="alert alert-info py-2" role="status">No academic programs have been configured yet. Please contact the OJT coordinator.</div>
     <?php endif; ?>
-    <fieldset class="form-section">
-        <legend><span>01</span> Student information</legend>
+    <fieldset class="form-section" data-registration-step>
+        <legend>Student information</legend>
         <div class="row g-3">
             <div class="col-12 col-sm-6">
                 <label class="form-label" for="student-first-name">First name</label>
@@ -59,6 +59,9 @@ declare(strict_types=1);
                     <option value="3">Third year</option>
                     <option value="4">Fourth year</option>
                     <option value="5">Fifth year</option>
+                    <option value="6">Sixth year</option>
+                    <option value="7">Seventh year</option>
+                    <option value="8">Eighth year</option>
                 </select>
             </div>
             <div class="col-12 col-sm-6">
@@ -71,26 +74,38 @@ declare(strict_types=1);
             </div>
         </div>
     </fieldset>
-    <fieldset class="form-section">
-        <legend><span>02</span> Account information</legend>
+    <fieldset class="form-section" data-registration-step>
+        <legend>Account information</legend>
         <div class="mb-3">
             <label class="form-label" for="register-email">Student email</label>
             <input class="form-control" id="register-email" name="email" type="email" autocomplete="email" required maxlength="190" placeholder="student@example.com">
         </div>
         <div class="mb-3">
             <label class="form-label" for="register-password">Create password</label>
-            <input class="form-control" id="register-password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Choose a password">
-            <span class="form-hint">Use 8 to 72 bytes.</span>
+            <div class="password-field">
+                <input class="form-control" id="register-password" name="password" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Choose a password">
+                <button class="password-toggle" type="button" data-password-toggle aria-controls="register-password" aria-pressed="false" aria-label="Show password">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
+            <span class="form-hint">Use at least 8 characters. The password must fit within 72 bytes.</span>
         </div>
         <div class="mb-3">
             <label class="form-label" for="register-password-confirmation">Confirm password</label>
-            <input class="form-control" id="register-password-confirmation" name="password_confirmation" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Repeat the password">
+            <div class="password-field">
+                <input class="form-control" id="register-password-confirmation" name="password_confirmation" type="password" autocomplete="new-password" required minlength="8" maxlength="72" placeholder="Repeat the password">
+                <button class="password-toggle" type="button" data-password-toggle aria-controls="register-password-confirmation" aria-pressed="false" aria-label="Show password">
+                    <i class="bi bi-eye" aria-hidden="true"></i>
+                </button>
+            </div>
         </div>
     </fieldset>
-    <button class="btn btn-primary btn-auth w-100" type="submit">
-        Register student <i class="bi bi-arrow-right" aria-hidden="true"></i>
-    </button>
-    <p class="prototype-feedback" id="register-feedback" aria-live="polite"></p>
+    <div class="registration-actions">
+        <button class="btn btn-secondary" type="button" data-registration-back hidden>Back</button>
+        <button class="btn btn-primary" type="button" data-registration-next hidden>Continue <i class="bi bi-arrow-right" aria-hidden="true"></i></button>
+        <button class="btn btn-primary" type="submit">Create account</button>
+    </div>
+    <p class="form-feedback" id="register-feedback" aria-live="polite"></p>
     <p class="auth-switch">Already have an account? <a href="<?= app_escape(app_route_url('login', $appBase)) ?>">Sign in</a></p>
 </form>
 <p class="auth-security-note"><i class="bi bi-info-circle" aria-hidden="true"></i> Public registration always creates a student account.</p>
