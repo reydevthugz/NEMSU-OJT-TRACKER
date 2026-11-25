@@ -1,0 +1,71 @@
+:root {
+    color-scheme: light;
+    --nemsu-navy: #12304a;
+    --nemsu-blue: #1d5e83;
+    --nemsu-gold: #e8b84a;
+    --muted-text: #607181;
+}
+
+body {
+    background:
+        radial-gradient(ellipse at 12% 15%, rgba(29, 94, 131, 0.1), transparent 34rem),
+        #f4f7fa;
+    color: var(--nemsu-navy);
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+}
+
+.welcome-card {
+    width: min(100%, 760px);
+    border: 1px solid rgba(18, 48, 74, 0.08);
+    border-radius: 1.25rem;
+    background: #fff;
+    box-shadow: 0 1.5rem 4rem rgba(18, 48, 74, 0.1);
+}
+
+.brand-mark {
+    display: grid;
+    width: 3.5rem;
+    height: 3.5rem;
+    place-items: center;
+    border-radius: 1rem;
+    background: var(--nemsu-navy);
+    color: #fff;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.eyebrow {
+    color: var(--nemsu-blue);
+    font-size: 0.8rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.system-title {
+    color: var(--muted-text);
+    font-size: clamp(1rem, 2.5vw, 1.2rem);
+}
+
+.status-note {
+    display: flex;
+    width: fit-content;
+    max-width: 100%;
+    align-items: flex-start;
+    gap: 0.65rem;
+    border-radius: 0.75rem;
+    background: #f1f7f8;
+    color: var(--nemsu-navy);
+    padding: 0.85rem 1rem;
+    text-align: left;
+}
+
+.status-indicator {
+    width: 0.65rem;
+    height: 0.65rem;
+    flex: 0 0 auto;
+    margin-top: 0.35rem;
+    border-radius: 50%;
+    background: #368b69;
+    box-shadow: 0 0 0 0.25rem rgba(54, 139, 105, 0.12);
+}
