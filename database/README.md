@@ -29,6 +29,16 @@ php database/seed_programs.php
 
 The seeder verifies the `programs` columns and unique indexes, uses prepared statements, and never modifies a matching existing record. It stops rather than overwriting a conflicting record.
 
+## Screenshot data seed
+
+For local documentation screenshots, seed one account for each role and realistic linked records:
+
+```powershell
+php database\seed_screenshot_data.php
+```
+
+The seeder uses temporary NEMSU-style accounts and the password `TempPass!2026`. It is idempotent and should only be run in a local/test database. Full account and screenshot guidance is in `docs/SCREENSHOT_TEST_ACCOUNTS.md`.
+
 The actual MySQL registration-to-program association can be checked without retaining a test account:
 
 ```powershell

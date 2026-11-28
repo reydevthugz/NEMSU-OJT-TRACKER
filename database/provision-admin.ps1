@@ -42,9 +42,24 @@ try {
     }
     $payloadJson = ConvertTo-Json -InputObject $payload -Compress
     $payloadBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($payloadJson))
-    $phpScript = Join-Path $PSScriptRoot 'provision-admin.php'
 
-    $payloadBase64 | & $phpCommand.Source $phpScript '--payload-base64-stdin'
+    $phpCode = @'
+require_once getcwd() . '/app/bootstrap.php';
+require_once getcwd() . '/app/models/AdministratorProvisioner.php';
+try {
+    $encoded = trim((string) stream_get_contents(STDIN));
+    $json = base64_decode($encoded, true);
+    if ($json === false) throw new InvalidArgumentException('Invalid provisioning input.');
+    $payload = json_decode($json, true, 8, JSON_THROW_ON_ERROR);
+    $id = (new AdministratorProvisioner(database_connection()))->createFirstAdministrator((string)($payload['name'] ?? ''), (string)($payload['email'] ?? ''), (string)($payload['password'] ?? ''));
+    echo 'First administrator created successfully (user ID ' . $id . '). You can now sign in.' . PHP_EOL;
+} catch (Throwable $e) {
+    fwrite(STDERR, $e->getMessage() . PHP_EOL);
+    exit(1);
+}
+'@
+    $phpCodeBase64 = [Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($phpCode))
+    $payloadBase64 | & $phpCommand.Source '-r' "eval(base64_decode('$phpCodeBase64'));"
     $exitCode = $LASTEXITCODE
 } catch {
     [Console]::Error.WriteLine($_.Exception.Message)

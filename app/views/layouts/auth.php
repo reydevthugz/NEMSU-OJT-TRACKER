@@ -39,6 +39,16 @@ $isRegistration = $pageKey === 'register';
         <section class="auth-content-panel">
             <div class="auth-content-inner">
                 <p class="auth-back-link"><a href="<?= app_escape(app_route_url('home', $appBase)) ?>"><i class="bi bi-arrow-left" aria-hidden="true"></i> Back to home</a></p>
+                <?php if (is_authenticated()): ?>
+                    <div class="alert alert-info py-2 d-flex align-items-center justify-content-between gap-2" role="status">
+                        <span>Signed in as <?= app_escape(authenticated_user()['name'] ?? 'current user') ?>.</span>
+                        <form method="post" action="<?= app_escape(app_route_url('home', $appBase)) ?>" class="m-0">
+                            <input type="hidden" name="action" value="logout">
+                            <input type="hidden" name="csrf_token" value="<?= app_escape(csrf_token()) ?>">
+                            <button type="submit" class="btn btn-sm btn-outline-primary">Switch account</button>
+                        </form>
+                    </div>
+                <?php endif; ?>
                 <h2 class="auth-heading"><?= app_escape($pageTitle) ?></h2>
                 <p class="auth-description"><?= app_escape($pageSubtitle) ?></p>
                 <?php require $viewPath; ?>

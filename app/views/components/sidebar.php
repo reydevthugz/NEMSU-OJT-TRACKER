@@ -14,9 +14,21 @@ $navigation = [
         ['OJT progress', 'student/progress', 'bi-graph-up'],
         ['Notifications', 'student/notifications', 'bi-bell'],
     ],
-    'Adviser' => [['Dashboard', 'dashboard/adviser', 'bi-grid-1x2']],
-    'Coordinator' => [['Dashboard', 'dashboard/coordinator', 'bi-grid-1x2']],
-    'Company Supervisor' => [['Dashboard', 'dashboard/supervisor', 'bi-grid-1x2']],
+    'Adviser' => [
+        ['Dashboard', 'dashboard/adviser', 'bi-grid-1x2'],
+        ['Assigned students', 'adviser/students', 'bi-person-vcard'],
+        ['OJT reports', 'reports/index', 'bi-file-earmark-bar-graph'],
+    ],
+    'Coordinator' => [
+        ['Dashboard', 'dashboard/coordinator', 'bi-grid-1x2'],
+        ['Placements', 'coordinator/placements', 'bi-briefcase'],
+        ['Requirement review', 'coordinator/requirements', 'bi-card-checklist'],
+        ['OJT reports', 'reports/index', 'bi-file-earmark-bar-graph'],
+    ],
+    'Company Supervisor' => [
+        ['Dashboard', 'dashboard/supervisor', 'bi-grid-1x2'],
+        ['Attendance & evaluations', 'supervisor/workflow', 'bi-calendar2-check'],
+    ],
     'System Administrator' => [
         ['Dashboard', 'dashboard/admin', 'bi-grid-1x2'],
         ['User accounts', 'admin/users', 'bi-people'],
@@ -26,6 +38,8 @@ $navigation = [
         ['Company positions', 'admin/positions', 'bi-briefcase'],
         ['Skills catalog', 'admin/skills', 'bi-lightning'],
         ['Requirement types', 'admin/requirements', 'bi-card-checklist'],
+        ['Adviser assignments', 'admin/adviser-assignments', 'bi-person-check'],
+        ['OJT reports', 'reports/index', 'bi-file-earmark-bar-graph'],
     ],
 ];
 $items = $navigation[$role] ?? [];

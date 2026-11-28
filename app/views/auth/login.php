@@ -18,7 +18,7 @@ declare(strict_types=1);
         <label class="form-label" for="login-identity">Email address</label>
         <div class="input-icon-wrap">
             <i class="bi bi-person" aria-hidden="true"></i>
-            <input class="form-control" id="login-identity" name="email" type="email" autocomplete="username" required maxlength="190" placeholder="student@example.com">
+            <input class="form-control" id="login-identity" name="email" type="email" autocomplete="username" required maxlength="190" placeholder="name@example.com">
         </div>
     </div>
     <div class="mb-3">

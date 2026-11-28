@@ -113,4 +113,76 @@ final class User
             throw $exception;
         }
     }
+
+    public function updateStudentProfile(int $userId, string $name, string $email, int $yearLevel, string $preferredLocation): void
+    {
+        $name = trim($name);
+        $email = strtolower(trim($email));
+        $preferredLocation = trim($preferredLocation);
+
+        if ($name === '' || strlen($name) > 120) {
+            throw new InvalidArgumentException('Enter a valid full name.');
+        }
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL) || strlen($email) > 190) {
+            throw new InvalidArgumentException('Enter a valid email address.');
+        }
+        if ($yearLevel < 1 || $yearLevel > 8) {
+            throw new InvalidArgumentException('Select a valid year level.');
+        }
+        if (strlen($preferredLocation) > 180) {
+            throw new InvalidArgumentException('Preferred location must be 180 characters or fewer.');
+        }
+
+        $emailStatement = $this->db->prepare(
+            'SELECT 1 FROM users WHERE email = :email AND id <> :user_id LIMIT 1'
+        );
+        $emailStatement->execute(['email' => $email, 'user_id' => $userId]);
+        if ($emailStatement->fetchColumn() !== false) {
+            throw new DomainException('That email address is already used by another account.');
+        }
+
+        $ownsTransaction = !$this->db->inTransaction();
+        if ($ownsTransaction) {
+            $this->db->beginTransaction();
+        }
+
+        try {
+            $userStatement = $this->db->prepare(
+                'UPDATE users SET name = :name, email = :email, updated_at = CURRENT_TIMESTAMP
+                 WHERE id = :user_id AND role = :role'
+            );
+            $userStatement->execute([
+                'name' => $name,
+                'email' => $email,
+                'user_id' => $userId,
+                'role' => 'student',
+            ]);
+
+            $profileStatement = $this->db->prepare(
+                'UPDATE student_profiles
+                 SET year_level = :year_level, preferred_location = :preferred_location,
+                     updated_at = CURRENT_TIMESTAMP
+                 WHERE user_id = :user_id'
+            );
+            $profileStatement->execute([
+                'year_level' => $yearLevel,
+                'preferred_location' => $preferredLocation !== '' ? $preferredLocation : null,
+                'user_id' => $userId,
+            ]);
+
+            if ($ownsTransaction) {
+                $this->db->commit();
+            }
+        } catch (Throwable $exception) {
+            if ($ownsTransaction && $this->db->inTransaction()) {
+                $this->db->rollBack();
+            }
+            throw $exception;
+        }
+
+        if (isset($_SESSION['auth']) && (int) $_SESSION['auth']['user_id'] === $userId) {
+            $_SESSION['auth']['name'] = $name;
+            $_SESSION['auth']['email'] = $email;
+        }
+    }
 }

@@ -15,10 +15,7 @@ final class DashboardModel
             'student' => $this->studentSummary($userId),
             'coordinator' => $this->coordinatorSummary($userId),
             'supervisor' => $this->supervisorSummary($userId),
-            'adviser' => [
-                'assignment_relationship_available' => false,
-                'recent_notifications' => $this->recentNotifications($userId),
-            ],
+            'adviser' => $this->adviserSummary($userId),
             default => throw new InvalidArgumentException('Unsupported dashboard role.'),
         };
     }
@@ -138,6 +135,7 @@ final class DashboardModel
                           INNER JOIN company_positions ON company_positions.id = placements.position_id
                           INNER JOIN companies ON companies.id = company_positions.company_id
                           LEFT JOIN attendance_records ON attendance_records.placement_id = placements.id
+                           AND attendance_records.status = \'verified\'
                           WHERE student_profiles.user_id = :user_id
                           GROUP BY placements.id, companies.name, company_positions.title,
                                    placements.status, placements.required_hours, placements.created_at
@@ -153,7 +151,7 @@ final class DashboardModel
                 'empty_message' => 'Recorded attendance totals will appear after a placement and attendance records exist.',
             ],
             'notifications' => [
-                'sql' => 'SELECT title, message, read_at, created_at
+                'sql' => 'SELECT id, title, message, read_at, created_at
                           FROM notifications
                           WHERE user_id = :user_id
                           ORDER BY created_at DESC, id DESC
@@ -264,7 +262,8 @@ final class DashboardModel
                 'SELECT COALESCE(SUM(attendance_records.total_hours), 0)
                  FROM attendance_records
                  INNER JOIN placements ON placements.id = attendance_records.placement_id
-                 WHERE placements.student_profile_id = :profile_id'
+                 WHERE placements.student_profile_id = :profile_id
+                   AND attendance_records.status = \'verified\''
             );
             $attendanceStatement->execute(['profile_id' => $profileId]);
             $attendanceHours = (float) $attendanceStatement->fetchColumn();
@@ -370,6 +369,42 @@ final class DashboardModel
                 $this->stat('Active placements', $activePlacementCount, 'At your linked companies', 'bi-briefcase'),
             ],
             'trainees' => $traineesStatement->fetchAll(),
+            'recent_notifications' => $this->recentNotifications($userId),
+        ];
+    }
+
+    private function adviserSummary(int $userId): array
+    {
+        $countStatement = $this->db->prepare(
+            "SELECT COUNT(*) FROM adviser_student_assignments
+             WHERE adviser_user_id = :user_id AND status = 'active'"
+        );
+        $countStatement->execute(['user_id' => $userId]);
+
+        $studentsStatement = $this->db->prepare(
+            "SELECT u.name, u.email, sp.student_number,
+                    programs.code AS program_code,
+                    p.status AS placement_status,
+                    c.name AS company_name,
+                    cp.title AS position_title
+             FROM adviser_student_assignments asa
+             INNER JOIN student_profiles sp ON sp.id = asa.student_profile_id
+             INNER JOIN users u ON u.id = sp.user_id
+             INNER JOIN programs ON programs.id = sp.program_id
+             LEFT JOIN placements p ON p.student_profile_id = sp.id
+               AND p.status IN ('approved','active','completed')
+             LEFT JOIN company_positions cp ON cp.id = p.position_id
+             LEFT JOIN companies c ON c.id = cp.company_id
+             WHERE asa.adviser_user_id = :user_id AND asa.status = 'active'
+             ORDER BY u.name
+             LIMIT 10"
+        );
+        $studentsStatement->execute(['user_id' => $userId]);
+
+        return [
+            'assignment_relationship_available' => true,
+            'assigned_student_count' => (int) $countStatement->fetchColumn(),
+            'assigned_students' => $studentsStatement->fetchAll(),
             'recent_notifications' => $this->recentNotifications($userId),
         ];
     }

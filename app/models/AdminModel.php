@@ -579,6 +579,24 @@ final class AdminModel
         ]);
     }
 
+    public function resetUserPassword(int $userId, string $password): void
+    {
+        if (strlen($password) < 8 || strlen($password) > 72) {
+            throw new InvalidArgumentException('Password must be between 8 and 72 bytes.');
+        }
+
+        $existing = $this->userRoleAndStatus($userId);
+        if ($existing === null) {
+            throw new DomainException('The selected user account no longer exists.');
+        }
+
+        $statement = $this->db->prepare('UPDATE users SET password = :password, updated_at = CURRENT_TIMESTAMP WHERE id = :id');
+        $statement->execute([
+            'password' => password_hash($password, PASSWORD_DEFAULT),
+            'id' => $userId,
+        ]);
+    }
+
     private function validateSupervisorAssociation(int $companyId, int $supervisorUserId): void
     {
         $companyStatement = $this->db->prepare('SELECT 1 FROM companies WHERE id = :id LIMIT 1');

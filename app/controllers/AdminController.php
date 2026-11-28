@@ -34,6 +34,7 @@ final class AdminController
             'admin/positions' => $this->positionsPage($page, $search),
             'admin/skills' => $this->skillsPage($page, $search),
             'admin/requirements' => $this->requirementsPage($page, $search),
+            'admin/adviser-assignments' => [],
             default => ['not_found' => true],
         };
     }
@@ -279,6 +280,8 @@ final class AdminController
         $email = strtolower(trim($this->postString('email')));
         $role = $this->postString('role');
         $status = $this->postString('status');
+        $password = trim($this->postString('new_password'));
+        $passwordConfirmation = trim($this->postString('new_password_confirmation'));
         if ($userId < 1) {
             throw new InvalidArgumentException('Select a valid user account.');
         }
@@ -293,6 +296,12 @@ final class AdminController
         }
         if (!in_array($status, ['active', 'inactive', 'disabled'], true)) {
             throw new InvalidArgumentException('Choose a valid account status.');
+        }
+        if ($password !== '' && (strlen($password) < 8 || strlen($password) > 72)) {
+            throw new InvalidArgumentException('Set a password of 8 to 72 bytes.');
+        }
+        if ($password !== '' && !hash_equals($password, $passwordConfirmation)) {
+            throw new InvalidArgumentException('Password confirmation does not match.');
         }
 
         $currentUserId = (int) (authenticated_user()['user_id'] ?? 0);
@@ -314,6 +323,9 @@ final class AdminController
         }
 
         $this->model->updateUserAccount($userId, $name, $email, $role, $status);
+        if ($password !== '') {
+            $this->model->resetUserPassword($userId, $password);
+        }
         $redirectParameters['id'] = $userId;
 
         return 'User account updated.';

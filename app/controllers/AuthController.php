@@ -94,6 +94,8 @@ final class AuthController
                 'password' => $password,
             ]);
 
+            destroy_secure_session();
+            start_secure_session();
             set_flash('success', 'Registration completed. You can now sign in.');
             redirect_to_page('login');
         } catch (PDOException $exception) {

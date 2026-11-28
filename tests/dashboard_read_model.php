@@ -93,6 +93,12 @@ $db->exec(
         total_hours REAL NOT NULL,
         status TEXT NOT NULL
     );
+    CREATE TABLE adviser_student_assignments (
+        id INTEGER PRIMARY KEY,
+        adviser_user_id INTEGER NOT NULL,
+        student_profile_id INTEGER NOT NULL,
+        status TEXT NOT NULL DEFAULT 'active'
+    );
     CREATE TABLE notifications (
         id INTEGER PRIMARY KEY,
         user_id INTEGER NOT NULL,
@@ -131,7 +137,7 @@ $db->exec(
         (1, 1, 1, '2026-01-04', 'submitted'),
         (2, 2, 1, '2026-01-05', 'approved');
      INSERT INTO attendance_records (id, placement_id, attendance_date, time_in, time_out, total_hours, status)
-        VALUES (1, 1, '2026-01-06', '08:00', '16:30', 8.5, 'pending');
+        VALUES (1, 1, '2026-01-06', '08:00', '16:30', 8.5, 'verified');
      INSERT INTO notifications (id, user_id, title, message, read_at, created_at) VALUES
         (1, 1, 'Profile update', 'Your profile is ready.', NULL, '2026-01-07'),
         (2, 2, 'Other notice', 'This notice belongs to another account.', NULL, '2026-01-08'),
@@ -165,7 +171,7 @@ dashboard_check($supervisor['recent_notifications'][0]['title'] === 'Supervisor 
 
 $admin = $model->forRole('admin', 4);
 dashboard_check((int) $admin['stats'][0]['value'] === 4, 'Administrator totals should reflect actual user counts.');
-dashboard_check($model->forRole('adviser', 2)['assignment_relationship_available'] === false, 'Adviser view must not imply assignments unsupported by the schema.');
+dashboard_check($model->forRole('adviser', 2)['assignment_relationship_available'] === true, 'Adviser view must expose the assignment relationship when it is available.');
 
 $status = 'inactive';
 ob_start();

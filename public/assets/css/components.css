@@ -180,9 +180,9 @@
 
 .auth-shell {
     display: grid;
+    width: 100%;
     min-height: 100vh;
-    grid-template-columns: minmax(300px, 0.82fr) minmax(0, 1.18fr);
-    background: var(--surface);
+    grid-template-columns: clamp(320px, 36vw, 480px) minmax(0, 1fr);
 }
 
 .auth-brand-panel {
@@ -193,6 +193,8 @@
     background: var(--primary);
     color: var(--surface);
     padding: clamp(2rem, 5vw, 5.5rem);
+    min-width: 0;
+    overflow: hidden;
 }
 
 .auth-brand-panel .brand-mark {
@@ -211,6 +213,7 @@
     font-size: clamp(2rem, 4vw, 3.25rem);
     font-weight: 750;
     line-height: 1.13;
+    overflow-wrap: anywhere;
 }
 
 .auth-brand-footer {
@@ -282,6 +285,9 @@
     display: grid;
     place-items: center;
     padding: 2rem clamp(1.5rem, 7vw, 7rem);
+    min-width: 0;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 .auth-content-inner {
@@ -470,11 +476,24 @@
 
 .app-shell {
     display: grid;
+    width: 100%;
     min-height: 100vh;
     grid-template-columns: 260px minmax(0, 1fr);
 }
 
+.app-main {
+    grid-column: 2;
+    grid-row: 1;
+    display: block;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
 .app-sidebar {
+    grid-column: 1;
+    grid-row: 1;
     position: sticky;
     z-index: 1020;
     top: 0;
@@ -675,8 +694,10 @@
 }
 
 .content-area {
+    display: block;
     width: 100%;
     max-width: 1600px;
+    min-height: 12rem;
     padding: 1.5rem clamp(1rem, 2.5vw, 2rem) 2rem;
 }
 
@@ -1012,6 +1033,55 @@
     font-weight: 800;
 }
 
+.sidebar-backdrop {
+    display: none;
+}
+
+.attendance-verification-table {
+    width: 100%;
+    min-width: 760px;
+    table-layout: fixed;
+}
+
+.attendance-verification-table th:nth-child(1) { width: 12%; }
+.attendance-verification-table th:nth-child(2) { width: 25%; }
+.attendance-verification-table th:nth-child(3) { width: 12%; }
+.attendance-verification-table th:nth-child(4) { width: 7%; }
+.attendance-verification-table th:nth-child(5) { width: 11%; }
+.attendance-verification-table th:nth-child(6) { width: 33%; }
+
+.attendance-verification-table td,
+.attendance-verification-table th {
+    vertical-align: middle;
+}
+
+.attendance-verification-table td:nth-child(2) {
+    overflow-wrap: anywhere;
+}
+
+.attendance-review-form {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.attendance-review-form .form-select {
+    flex: 0 0 5.75rem;
+    width: 5.75rem;
+}
+
+.attendance-review-form .form-control {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+}
+
+.attendance-review-form .btn {
+    flex: 0 0 auto;
+}
+
 @media (max-width: 767.98px) {
     .home-topbar {
         flex-wrap: wrap;
@@ -1053,7 +1123,6 @@
 
     .auth-brand-panel h1,
     .auth-brand-copy,
-    .auth-illustration,
     .auth-brand-footer {
         display: none;
     }

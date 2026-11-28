@@ -180,3 +180,15 @@ function dashboard_page_for_role(string $role): string
         default => 'dashboard/student',
     };
 }
+
+function role_display_name(string $role): string
+{
+    return match ($role) {
+        'student' => 'Student',
+        'adviser' => 'Adviser',
+        'coordinator' => 'Coordinator',
+        'supervisor' => 'Company Supervisor',
+        'admin' => 'System Administrator',
+        default => '',
+    };
+}

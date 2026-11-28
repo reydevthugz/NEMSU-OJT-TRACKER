@@ -1,4 +1,4 @@
-# Entity Relationship Diagram
+    # Entity Relationship Diagram
 
 The following Mermaid diagram documents the Phase 2 relational schema.
 
@@ -26,7 +26,7 @@ erDiagram
     placements ||--o{ attendance_records : has
     users o|--o{ attendance_records : verifies
     placements ||--o{ evaluations : receives
-    users ||--o{ evaluations : supervisor
+    users ||--o{ evaluations : supervisor           
     users ||--o{ notifications : receives
 
     users {
@@ -71,4 +71,4 @@ erDiagram
         bigint supervisor_id FK
         tinyint rating
     }
-```
+
