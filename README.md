@@ -16,6 +16,8 @@ On-the-Job Training Placement and Monitoring System built with native PHP, Boots
 4. Open `http://localhost/nemsu-ojt-tracker/`.
 5. Students can register through the public registration page. Administrator access requires an explicitly provisioned administrator; the application does not create a default account.
 
+For local documentation screenshots, use the temporary accounts and realistic seed records listed in [Screenshot Test Accounts and Temporary Data](docs/SCREENSHOT_TEST_ACCOUNTS.md). These credentials are for local/test databases only.
+
 If the database owner authorizes initial administrator provisioning, run the CLI-only PowerShell prompt from the project root:
 
 ```powershell

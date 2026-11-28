@@ -54,6 +54,14 @@ $user = $adminData['user'];
                 <?php endforeach; ?>
             </select>
         </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="new-password">Set new password <span class="text-muted">(optional)</span></label>
+            <input class="form-control" id="new-password" name="new_password" type="password" minlength="8" maxlength="72" autocomplete="new-password" placeholder="Leave blank to keep password">
+        </div>
+        <div class="col-12 col-md-6">
+            <label class="form-label" for="new-password-confirmation">Confirm new password</label>
+            <input class="form-control" id="new-password-confirmation" name="new_password_confirmation" type="password" minlength="8" maxlength="72" autocomplete="new-password">
+        </div>
         <div class="col-12"><button class="btn btn-primary" type="submit">Save account changes</button></div>
     </form>
 </section>
